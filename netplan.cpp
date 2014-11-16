@@ -2,8 +2,11 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <unordered_map>
 
 #include "UndirectedGraph.hpp"
+
+using namespace std;
 
 /**
  * Entry point into the netplan program.
@@ -35,8 +38,8 @@ int main(int argc, char **argv) {
     }
     
     UndirectedGraph g = UndirectedGraph();
-    String v1;
-    String v2;
+    std::string v1;
+    std::string v2;
     float cost;
     float time;
     while (in.good()) {
@@ -44,10 +47,8 @@ int main(int argc, char **argv) {
       if(!in.good()) 
         break; 
  //add vertices
-     vertices.insert( v1 );
-     vertices.insert( v2 );
  //add edge
      g.addEdge( v1, v2, cost, time );
-
+     }
     return EXIT_SUCCESS;
 }

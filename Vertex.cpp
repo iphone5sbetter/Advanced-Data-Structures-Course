@@ -9,6 +9,9 @@ Vertex::Vertex ( const std::string &name ) {
 bool Vertex::addEdge(Vertex *to, unsigned int cost, unsigned int length) {
   Edge edge = Edge(this, to, cost, length); // Create new edge
   //edges[to->name] = edge;
+
+  //We need to check if this edge already exists here before inserting
+  //it into the map edges...if it doesnt then insert
   return edges.insert(std::make_pair(to->getName(), edge)).second; 
 }
 
