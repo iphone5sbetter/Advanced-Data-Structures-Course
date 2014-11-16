@@ -34,7 +34,20 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
     
-    // Implementation here
+    UndirectedGraph g = UndirectedGraph();
+    String v1;
+    String v2;
+    float cost;
+    float time;
+    while (in.good()) {
+      in >> v1 >> v2 >> cost >> time;
+      if(!in.good()) 
+        break; 
+ //add vertices
+     vertices.insert( v1 );
+     vertices.insert( v2 );
+ //add edge
+     g.addEdge( v1, v2, cost, time );
 
     return EXIT_SUCCESS;
 }
