@@ -1,4 +1,7 @@
 #include "Vertex.hpp"
+#include "UndirectedGraph.hpp"
+#include <string>
+using namespace std;
 
 Vertex::Vertex ( const std::string &name ) {
   this->name = name;
@@ -17,7 +20,7 @@ bool Vertex::addEdge(Vertex *to, unsigned int cost, unsigned int length) {
   return edges.insert(std::make_pair(to->getName(), edge)).second; 
 }
 
-const Vertex::std::string &getName() const {
+const std::string& Vertex::getName() const {
   return name;
 }
 
@@ -30,23 +33,25 @@ void Vertex::setDistance(unsigned int distance) {
 }
 
 bool Vertex::wasVisited() const {
-  return if(this->visited);
+  return this->visited;
 }
 
 void Vertex::setVisited(bool visited) {
-  if (!(edges->find(to->name)))
-    return true;
+  unordered_map<string, Vertex*>::const_iterator it = vertices.find(this->getName());
+  it->second->visited = visited;
+  /** if (!(edges.find(name)))	// Not visited
+    visited = false;
   }
-  else {
-    return false;
-  }
+  else {			// Visited
+    visited = true;
+  } */
 }
 
 void clearEdges() {
 
 }
 
-unsigned int void::totalEdgeCost() const {
+unsigned int Vertex::totalEdgeCost() const {
   int cost = 0;
   for ( auto it = edges.begin(); it != edges.end(); ++it )
     cost += it->second.getCost();

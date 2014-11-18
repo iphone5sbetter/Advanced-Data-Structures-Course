@@ -17,9 +17,7 @@ class Edge {
     /**
      * Constructs an Edge from the given parameters.
      */
-    Edge(Vertex *from, Vertex *to,
-            unsigned int cost,
-            unsigned int length);
+    Edge(Vertex *from, Vertex *to, unsigned int cost, unsigned int length);
 
     /**
      * Returns a pointer to the Vertex that this Edge originates

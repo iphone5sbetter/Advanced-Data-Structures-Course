@@ -10,7 +10,7 @@ void UndirectedGraph::addEdge(const std::string &from, const std::string &to,
 /////////////////////////////////////////////////////////////////////////
 //Where do we use the addEdge in vertex?? Do we call it for to and for from?
 /////////////////////////////////////////////////////////////////////////
-  unordered_map<string, Edge>::const_iterator it = vertices.find(from);
+  unordered_map<string, Vertex*>::const_iterator it = vertices.find(from);
   Vertex * fromVertex;
   Vertex * toVertex;
   if( it == vertices.end() ) {      // from vertex does not exist
@@ -30,8 +30,8 @@ void UndirectedGraph::addEdge(const std::string &from, const std::string &to,
     toVertex = it->second;
   }
   //call Vertex.cpp addEdge to actually create/add the edge 
-  fromVertex.addEdge( toVertex, cost, length );
-  toVertex.addEdge( fromVertex, cost, length );
+  fromVertex->addEdge( toVertex, cost, length );
+  toVertex->addEdge( fromVertex, cost, length );
 }
 
 unsigned int UndirectedGraph::totalEdgeCost() const {
@@ -48,8 +48,10 @@ void UndirectedGraph::minSpanningTree() {
 
 unsigned int UndirectedGraph::totalDistance(const std::string &from) {
 //D's algorithm
+return 0;
 }
 
 unsigned int UndirectedGraph::totalDistance() {
 //loop through each vertex and call the other totalDistance on them
+  return 0;
 }
