@@ -20,12 +20,12 @@ class UndirectedGraph {
      * Constructs an empty UndirectedGraph with no vertices and
      * no edges.
      */
-    UndirectedGraph();
+    UndirectedGraph(){};
 
     /**
      * Destructs an UndirectedGraph.
      */
-    ~UndirectedGraph();
+    ~UndirectedGraph(){};
     
     /**
      * Inserts an edge into the graph. If an edge already exists between

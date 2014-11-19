@@ -14,6 +14,8 @@ class Vertex;
  */
 class Edge {
   public:
+    //ctdr that does nothing to avoid compiler error
+    Edge();
     /**
      * Constructs an Edge from the given parameters.
      */

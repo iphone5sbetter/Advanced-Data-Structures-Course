@@ -2,6 +2,9 @@
 
 using namespace std;
 
+Edge::Edge() {
+}
+
 Edge::Edge(Vertex *from, Vertex *to, unsigned int cost, unsigned int length) {
   this->from = from;
   this->to = to;
@@ -9,11 +12,11 @@ Edge::Edge(Vertex *from, Vertex *to, unsigned int cost, unsigned int length) {
   this->length = length;
 }
 
-Edge::Vertex *getFrom() const {
+Vertex* Edge::getFrom() const {
   return this->from;
 }
 
-Edge::Vertex *getTo() const {
+Vertex* Edge::getTo() const {
   return this->to;
 }
 

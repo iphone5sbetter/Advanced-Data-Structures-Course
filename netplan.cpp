@@ -40,8 +40,8 @@ int main(int argc, char **argv) {
     UndirectedGraph g = UndirectedGraph();
     std::string v1;
     std::string v2;
-    float cost;
-    float time;
+    int cost;
+    int time;
     while (in.good()) {
       in >> v1 >> v2 >> cost >> time;
       if(!in.good()) 
@@ -50,5 +50,9 @@ int main(int argc, char **argv) {
  //add edge
      g.addEdge( v1, v2, cost, time );
      }
+
+     cout<< g.totalEdgeCost()<< endl;
+     cout<< "Part 2 not yet implemented" << endl;
+     cout<< "Part 3 not yet implemented" << endl;
     return EXIT_SUCCESS;
 }

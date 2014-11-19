@@ -12,11 +12,9 @@ Vertex::Vertex ( const std::string &name ) {
 bool Vertex::addEdge(Vertex *to, unsigned int cost, unsigned int length) {
   Edge edge = Edge(this, to, cost, length); // Create new edge
    
-  //
   edges[to->name] = edge;
 
-  //We need to check if this edge already exists here before inserting
-  //it into the map edges...if it doesnt then insert
+
   return edges.insert(std::make_pair(to->getName(), edge)).second; 
 }
 
@@ -37,14 +35,7 @@ bool Vertex::wasVisited() const {
 }
 
 void Vertex::setVisited(bool visited) {
-  unordered_map<string, Vertex*>::const_iterator it = vertices.find(this->getName());
-  it->second->visited = visited;
-  /** if (!(edges.find(name)))	// Not visited
-    visited = false;
-  }
-  else {			// Visited
-    visited = true;
-  } */
+  this->visited = visited;
 }
 
 void clearEdges() {
@@ -58,3 +49,27 @@ unsigned int Vertex::totalEdgeCost() const {
   return cost;
 }
 
+vector< Vertex* >& Vertex::getUnvisitedNeighbors() const {
+  //create an iterator and set it to the beginning of your edge list
+  unordered_map<std::string, Edge>::const_iterator it = edges.begin();
+
+  //create a vector list to store the vertices that are neighbors
+  vector< Vertex* > neighbors;
+
+  while( it != edges.end() ) {
+
+    auto edge = it->second;
+    Vertex* currentNeighbor = edge.getTo();
+    if( currentNeighbor->wasVisited() == false ) {
+      neighbors.push_back( currentNeighbor );
+    }
+    //increment the iterator to the next value in edges()
+    it++;
+  }
+
+  return neighbors;
+  
+}
+  
+   
+}

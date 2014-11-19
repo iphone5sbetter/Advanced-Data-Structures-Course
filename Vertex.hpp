@@ -64,6 +64,12 @@ class Vertex {
      * Gets total cost of all edges terminating at this Vertex.
      */
     unsigned int totalEdgeCost() const;
+
+    //returns a list of the vertices which are neighbors to the current vertex
+    //and are unvisited. 
+    //iterate through edges list and check each edge for the vertex it goes to
+    //and return the pointers to all those vertices to dereference
+    vector< Vertex* >& getUnvisitedNeighbors() const; 
     
   private:
     /**
