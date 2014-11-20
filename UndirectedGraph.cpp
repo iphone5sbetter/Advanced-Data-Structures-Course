@@ -2,6 +2,13 @@
 #include "Edge.hpp"
 #include "Vertex.hpp"
 #include <string>
+#include <queue>
+
+
+#include <cstdlib>
+#include <fstream>
+#include <iostream>
+
 
 using namespace std;
 
@@ -74,50 +81,79 @@ void UndirectedGraph::minSpanningTree() {
  */
 
 unsigned int UndirectedGraph::totalDistance(const std::string &from) {
-  priority_queue< std::pair<Vertex*, unsigned int>, 
-                  vector<std::pair<Vertex*, unsigned int > >, 
+  std::priority_queue< std::pair<Vertex*, unsigned int>, 
+                  std::vector<std::pair<Vertex*, unsigned int > >, 
 		  DijkstraVertexComparator > pq;
+
  
   //enqueue the vertex that was passed in
   //find vertex in hashmap based on string passed in
-  vToEnqueue = vertices[ from ];
-  pairToEnqueue = make_pair( vToEnqueue, 0 );
+  Vertex * vToEnqueue = vertices[ from ];
+  std::pair<Vertex*, unsigned int> pairToEnqueue = 
+					std::make_pair( vToEnqueue, 0 );
+
   pq.push( pairToEnqueue );
+
   
-  while(!pq.empty() ) {
-  //	dequeue pair (v,c) from head thus removing the one with minimum cost
-    std::pair<Vertex*, unsigned int> v = pq.pop();
-  //	if( v->visited == true ) 	continue. Else, set it to true
- 
-    //if(v.first->visited == true )
-    if( v.first.wasVisited() == true )
+  while( !pq.empty() ) {
+    //	dequeue pair (v,c) from head thus removing the one with minimum cost
+    std::pair<Vertex*, unsigned int> v = pq.top();
+    pq.pop();
+
+    //	if( v->visited == true ) 	continue. Else, set it to true
+    if( v.first->wasVisited() == true )
 	continue;
     else
 	//v.first->visited = true;
-	v.first.setVisited( true );
+	v.first->setVisited( true );
 
-    vector< Vertex* > unvisitedNeighbors = v.getUnvisitedNeighbors();
 
-    vector< Vertex* >::const_iterator it = unvisitedNeighbors.begin();
+    std::vector< std::pair< Vertex*, Edge> > unvisitedNeighbors = 
+				v.first->getUnvisitedNeighbors();
+
+
+    std::vector<std::pair<Vertex*, Edge> >::const_iterator it = 
+						unvisitedNeighbors.begin();
+
     
-//for( each of v's adjacent nodes (w) where visited == false
+    //for( each of v's adjacent nodes (w) where visited == false
     while( it != unvisitedNeighbors.end() ) {
 
-//Ideas from the class notes: 
-    //NOTE: cost in D's alg is using latency aka length
-  //calculate bestCost = v->cost + v->time;
-    for( //dont know how to do this part )
-      int score = //(v,w)'s edge cost + v's distance
+      //get the edge
+      Edge vwEdge = it->second;
 
-//Tutor hints::
-//vertex.getName() = string
-//with name you can vertex edge
-//from edge get length 
-      if( score < //w's distance) {
-      
-      }  
+      //get the "w" vertex aka an adjacent node that has been unvisited
+      Vertex * wVertex = it->first;
+
+      //calculate score
+      unsigned int score = vwEdge.getLength() + v.first->getDistance();
+
+      //if score is less than w's distance set w's distance to score 
+      if( score < wVertex->getDistance() ) {
+         wVertex->setDistance( score );
+      }
+      //enqueue w
+      pq.push( std::make_pair( wVertex, wVertex->getDistance() ) );
+      //go to next unvisited neighbor
+        it++;  
+    }
   }
-return 0;
+
+
+  //create an iterator to iterate through vertices map
+  auto vertices_it = vertices.begin();
+
+  unsigned int toReturn = 0;
+
+  while ( vertices_it != vertices.end() ){
+
+    //sum all of the distances
+    toReturn += vertices_it->second->getDistance();
+    //go to next vertex
+    vertices_it++;
+  }
+
+  return toReturn;
 }
 
 
@@ -128,8 +164,24 @@ return 0;
  * Returns max possible distance if the graph is not connected.
  */
 unsigned int UndirectedGraph::totalDistance() {
-//loop through each vertex and call the other totalDistance on them
-  return 0;
+  //loop through each vertex and call the other totalDistance on them
+
+  //create iterator for vertices
+  auto it = vertices.begin();
+  unsigned int totalDistance = 0;
+
+
+  //loop through all of vertices
+  while( it != vertices.end() ) {
+
+
+  //	sumTotalDistance += call totalDistance for all of them
+    totalDistance += this->totalDistance(it->first);
+    it++;
+
+  }
+
+  return totalDistance;
 }
 
 

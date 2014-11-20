@@ -54,5 +54,6 @@ int main(int argc, char **argv) {
      cout<< g.totalEdgeCost()<< endl;
      cout<< "Part 2 not yet implemented" << endl;
      cout<< "Part 3 not yet implemented" << endl;
+     cout<< g.totalDistance() << endl;
     return EXIT_SUCCESS;
 }

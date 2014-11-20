@@ -3,6 +3,7 @@
 
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 #include "Edge.hpp"
 //#include "UndirectedGraph.hpp"
@@ -69,7 +70,7 @@ class Vertex {
     //and are unvisited. 
     //iterate through edges list and check each edge for the vertex it goes to
     //and return the pointers to all those vertices to dereference
-    vector< Vertex* >& getUnvisitedNeighbors() const; 
+    std::vector< std::pair<Vertex*, Edge> >& getUnvisitedNeighbors() const; 
     
   private:
     /**

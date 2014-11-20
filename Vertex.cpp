@@ -1,6 +1,7 @@
 #include "Vertex.hpp"
 #include "UndirectedGraph.hpp"
 #include <string>
+#include <queue>
 using namespace std;
 
 Vertex::Vertex ( const std::string &name ) {
@@ -39,7 +40,8 @@ void Vertex::setVisited(bool visited) {
 }
 
 void clearEdges() {
-
+  //use erase method
+  //edges.erase( begin, end ) 
 }
 
 unsigned int Vertex::totalEdgeCost() const {
@@ -49,27 +51,29 @@ unsigned int Vertex::totalEdgeCost() const {
   return cost;
 }
 
-vector< Vertex* >& Vertex::getUnvisitedNeighbors() const {
+std::vector< std::pair<Vertex*, Edge> >& Vertex::getUnvisitedNeighbors() const {
   //create an iterator and set it to the beginning of your edge list
   unordered_map<std::string, Edge>::const_iterator it = edges.begin();
 
   //create a vector list to store the vertices that are neighbors
-  vector< Vertex* > neighbors;
+  std::vector< std::pair<Vertex*, Edge> > * neighbors 
+			= new std::vector< std::pair<Vertex*, Edge> >();
 
   while( it != edges.end() ) {
 
     auto edge = it->second;
     Vertex* currentNeighbor = edge.getTo();
     if( currentNeighbor->wasVisited() == false ) {
-      neighbors.push_back( currentNeighbor );
+      neighbors->push_back( std::make_pair(currentNeighbor, edge) );
     }
     //increment the iterator to the next value in edges()
     it++;
   }
 
-  return neighbors;
+  return *neighbors;
   
 }
+
   
    
-}
+

@@ -3,7 +3,7 @@
 
 #include <string>
 #include <unordered_map>
-
+#include <vector>
 #include "Vertex.hpp"
 
 /**
@@ -74,8 +74,16 @@ class UndirectedGraph {
      * Returns max possible distance if the graph is not connected.
      */
     unsigned int totalDistance();
+
     
   private:
+    
+    /**
+     * Map of vertex name to Vertex.
+     */
+    std::unordered_map<std::string, Vertex*> vertices;
+};
+
     /**
      * Comparison functor for use with Dijkstra's algorithm. Allows Vertices
      * to be added to a priority queue more than once, with different weights.
@@ -91,13 +99,12 @@ class UndirectedGraph {
     class DijkstraVertexComparator {
       public:
         bool operator()(const std::pair<Vertex*, unsigned int> &left,
-                const std::pair<Vertex*, unsigned int> &right);
+                const std::pair<Vertex*, unsigned int> &right){
+	  if( left.second > right.second )
+	    return true;
+	  else
+	    return false;
+        }
     };
-    
-    /**
-     * Map of vertex name to Vertex.
-     */
-    std::unordered_map<std::string, Vertex*> vertices;
-};
 
 #endif
