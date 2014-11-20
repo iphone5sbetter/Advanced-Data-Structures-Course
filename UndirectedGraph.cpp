@@ -66,7 +66,13 @@ unsigned int UndirectedGraph::totalEdgeCost() const {
 * impossible is undefined behavior.
 */
 void UndirectedGraph::minSpanningTree() {
-
+ /** UndirectedGraph graph = new UndirectedGraph();
+  std::priority_queue< std::pair<Edge, unsigned int>, 
+                  std::vector<std::pair<Vertex*, unsigned int > >, 
+		  DijkstraVertexComparator > pq;
+  //std::pair<Vertex*, unsigned int> v = vertices->first;
+  std::vector<Vertex*> v = vertices->first;
+  */
 }
 
 
@@ -85,16 +91,14 @@ unsigned int UndirectedGraph::totalDistance(const std::string &from) {
                   std::vector<std::pair<Vertex*, unsigned int > >, 
 		  DijkstraVertexComparator > pq;
 
- 
   //enqueue the vertex that was passed in
   //find vertex in hashmap based on string passed in
   Vertex * vToEnqueue = vertices[ from ];
   std::pair<Vertex*, unsigned int> pairToEnqueue = 
 					std::make_pair( vToEnqueue, 0 );
-
   pq.push( pairToEnqueue );
 
-  
+  cout << from << endl;
   while( !pq.empty() ) {
     //	dequeue pair (v,c) from head thus removing the one with minimum cost
     std::pair<Vertex*, unsigned int> v = pq.top();
@@ -135,10 +139,10 @@ unsigned int UndirectedGraph::totalDistance(const std::string &from) {
       //enqueue w
       pq.push( std::make_pair( wVertex, wVertex->getDistance() ) );
       //go to next unvisited neighbor
-        it++;  
+      it++;  
+      //v.first->setVisited(true);
     }
   }
-
 
   //create an iterator to iterate through vertices map
   auto vertices_it = vertices.begin();
@@ -174,10 +178,12 @@ unsigned int UndirectedGraph::totalDistance() {
   //loop through all of vertices
   while( it != vertices.end() ) {
 
-
+cout << "Before" << totalDistance << endl;
   //	sumTotalDistance += call totalDistance for all of them
     totalDistance += this->totalDistance(it->first);
     it++;
+cout << "After" << totalDistance << endl;
+
 
   }
 

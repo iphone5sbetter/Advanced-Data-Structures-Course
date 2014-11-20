@@ -106,5 +106,15 @@ class UndirectedGraph {
 	    return false;
         }
     };
+    class MSTComparator {
+      public:
+        bool operator()(const std::pair<Edge, unsigned int> &left,
+                const std::pair<Edge, unsigned int> &right){
+	  if( left.second > right.second )
+	    return true;
+	  else
+	    return false;
+        }
+    };
 
 #endif
