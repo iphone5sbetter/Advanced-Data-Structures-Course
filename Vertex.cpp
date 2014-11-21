@@ -4,9 +4,11 @@
 #include <queue>
 using namespace std;
 
+const int INFINITY = 2147483647;
+
 Vertex::Vertex ( const std::string &name ) {
   this->name = name;
-  distance = -1; 
+  distance = INFINITY; 
   visited = false;
 }
 

@@ -9,6 +9,8 @@
 #include <fstream>
 #include <iostream>
 
+const int INFINITY = 2147483647;
+
 
 using namespace std;
 
@@ -81,6 +83,15 @@ void UndirectedGraph::minSpanningTree() {
  */
 
 unsigned int UndirectedGraph::totalDistance(const std::string &from) {
+  //make sure that all distances are infinity to begin and visited is false
+  auto it = vertices.begin();
+  while ( it!= vertices.end() ) {
+    it->second->setDistance( INFINITY );
+    it->second->setVisited( false );
+    it++;
+  }
+
+  //create a priority queue
   std::priority_queue< std::pair<Vertex*, unsigned int>, 
                   std::vector<std::pair<Vertex*, unsigned int > >, 
 		  DijkstraVertexComparator > pq;
@@ -89,8 +100,14 @@ unsigned int UndirectedGraph::totalDistance(const std::string &from) {
   //enqueue the vertex that was passed in
   //find vertex in hashmap based on string passed in
   Vertex * vToEnqueue = vertices[ from ];
+
+
+
+  //set source vertex distance to zero
+  vToEnqueue->setDistance( 0 );
+
   std::pair<Vertex*, unsigned int> pairToEnqueue = 
-					std::make_pair( vToEnqueue, 0 );
+			std::make_pair( vToEnqueue, vToEnqueue->getDistance() );
 
   pq.push( pairToEnqueue );
 
@@ -125,12 +142,15 @@ unsigned int UndirectedGraph::totalDistance(const std::string &from) {
       //get the "w" vertex aka an adjacent node that has been unvisited
       Vertex * wVertex = it->first;
 
+
       //calculate score
       unsigned int score = vwEdge.getLength() + v.first->getDistance();
 
       //if score is less than w's distance set w's distance to score 
       if( score < wVertex->getDistance() ) {
          wVertex->setDistance( score );
+
+
       }
       //enqueue w
       pq.push( std::make_pair( wVertex, wVertex->getDistance() ) );
@@ -176,6 +196,8 @@ unsigned int UndirectedGraph::totalDistance() {
 
 
   //	sumTotalDistance += call totalDistance for all of them
+
+
     totalDistance += this->totalDistance(it->first);
     it++;
 
