@@ -67,8 +67,23 @@ unsigned int UndirectedGraph::totalEdgeCost() const {
 * is possible. To call this method when a spanning tree is
 * impossible is undefined behavior.
 */
-void UndirectedGraph::minSpanningTree() {
+UndirectedGraph * UndirectedGraph::minSpanningTree() {
+ //possibly make just edge not pair 
+ UndirectedGraph graph = new UndirectedGraph();
+  std::priority_queue< std::pair<Edge, unsigned int>, 
+                  std::vector<std::pair<Vertex*, unsigned int > >, 
+		  DijkstraVertexComparator > pq;
 
+  //pick arbitrary start vertex s
+  auto s = vertices.begin();
+  s->second->setVisited( true );
+
+  //iterate through s's vertices
+  
+
+  //std::pair<Vertex*, unsigned int> v = vertices->first;
+  std::vector<Vertex*> v = vertices->first;
+  
 }
 
 
@@ -96,7 +111,6 @@ unsigned int UndirectedGraph::totalDistance(const std::string &from) {
                   std::vector<std::pair<Vertex*, unsigned int > >, 
 		  DijkstraVertexComparator > pq;
 
- 
   //enqueue the vertex that was passed in
   //find vertex in hashmap based on string passed in
   Vertex * vToEnqueue = vertices[ from ];
@@ -107,11 +121,14 @@ unsigned int UndirectedGraph::totalDistance(const std::string &from) {
   vToEnqueue->setDistance( 0 );
 
   std::pair<Vertex*, unsigned int> pairToEnqueue = 
-			std::make_pair( vToEnqueue, vToEnqueue->getDistance() );
+
+			std::make_pair( vToEnqueue, vToEnqueue->getDistance() )
+
+					std::make_pair( vToEnqueue, 0 );
 
   pq.push( pairToEnqueue );
 
-  
+
   while( !pq.empty() ) {
     //	dequeue pair (v,c) from head thus removing the one with minimum cost
     std::pair<Vertex*, unsigned int> v = pq.top();
@@ -155,10 +172,10 @@ unsigned int UndirectedGraph::totalDistance(const std::string &from) {
       //enqueue w
       pq.push( std::make_pair( wVertex, wVertex->getDistance() ) );
       //go to next unvisited neighbor
-        it++;  
+      it++;  
+      //v.first->setVisited(true);
     }
   }
-
 
   //create an iterator to iterate through vertices map
   auto vertices_it = vertices.begin();
@@ -200,6 +217,8 @@ unsigned int UndirectedGraph::totalDistance() {
 
     totalDistance += this->totalDistance(it->first);
     it++;
+
+
 
   }
 
