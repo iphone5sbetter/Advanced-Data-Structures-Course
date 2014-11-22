@@ -3,13 +3,14 @@
 #include "Vertex.hpp"
 #include <string>
 #include <queue>
-
+#include <math.h>
 
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
 
-const int INFINITY = 2147483647;
+//const int INFINITY = 2147483647;
+//const int INFINITY = INT_MAX;
 
 
 using namespace std;
@@ -67,25 +68,47 @@ unsigned int UndirectedGraph::totalEdgeCost() const {
 * is possible. To call this method when a spanning tree is
 * impossible is undefined behavior.
 */
-UndirectedGraph * UndirectedGraph::minSpanningTree() {
- //possibly make just edge not pair 
- UndirectedGraph graph = new UndirectedGraph();
-  std::priority_queue< std::pair<Edge, unsigned int>, 
-                  std::vector<std::pair<Vertex*, unsigned int > >, 
-		  DijkstraVertexComparator > pq;
+UndirectedGraph UndirectedGraph::minSpanningTree() {
+  UndirectedGraph graph;
+  std::priority_queue< Edge, std::vector<Edge>, MSTComparator > pq;
 
-  //pick arbitrary start vertex s
   auto s = vertices.begin();
-  s->second->setVisited( true );
+  while (s != vertices.end()) {
+    s->second->setVisited(false);
+    s++;
+  }
 
-  //iterate through s's vertices
-  
+  Vertex * arbitrary = vertices.begin()->second;	// Arbitrary vertex
 
-  //std::pair<Vertex*, unsigned int> v = vertices->first;
-  std::vector<Vertex*> v = vertices->first;
+  arbitrary->setVisited(true);
+
+  // Iterate through adjacency list (go through all edges in hash map "edges")
+  unordered_map<std::string, Edge>::iterator it = arbitrary->edges.begin();
+  for (; it != arbitrary->edges.end(); it++) {
+    pq.push(it->second);		// Put edges in queue
+  }
   
+  while(!pq.empty()) {
+    Edge e = pq.top();
+    pq.pop();			// Remove edge with smallest cost
+    if (e.getTo()->wasVisited() == true) {
+      continue;
+    }
+    else {
+      e.getTo()->setVisited(true);
+      graph.addEdge(e.getFrom()->getName(), e.getTo()->getName(), e.getCost(), e.getLength());
+      unordered_map<std::string, Edge>::iterator itEdge;
+      for (itEdge = e.getTo()->edges.begin(); itEdge != e.getTo()->edges.end(); itEdge++)  
+      {
+        Vertex * vertex = itEdge->second.getTo();
+        if (vertex->wasVisited() == false) {	// not sure about using vertex
+	  pq.push(itEdge->second);
+	}
+      }
+    }
+  } 
+  return graph;
 }
-
 
 /**
  * Determines the combined distance from the given Vertex to all
@@ -121,10 +144,9 @@ unsigned int UndirectedGraph::totalDistance(const std::string &from) {
   vToEnqueue->setDistance( 0 );
 
   std::pair<Vertex*, unsigned int> pairToEnqueue = 
+		std::make_pair( vToEnqueue, vToEnqueue->getDistance() );
 
-			std::make_pair( vToEnqueue, vToEnqueue->getDistance() )
-
-					std::make_pair( vToEnqueue, 0 );
+  std::make_pair( vToEnqueue, 0 );
 
   pq.push( pairToEnqueue );
 

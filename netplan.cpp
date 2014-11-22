@@ -46,14 +46,18 @@ int main(int argc, char **argv) {
       in >> v1 >> v2 >> cost >> time;
       if(!in.good()) 
         break; 
- //add vertices
- //add edge
      g.addEdge( v1, v2, cost, time );
+     //primsGraph.addEdge( v1, v2, cost, time );
+
      }
 
+    UndirectedGraph primsGraph = g.minSpanningTree();
+     
      cout<< g.totalEdgeCost()<< endl;
-     cout<< "Part 2 not yet implemented" << endl;
-     cout<< "Part 3 not yet implemented" << endl;
+     cout<< primsGraph.totalEdgeCost() << endl;
+     cout<< g.totalEdgeCost() - primsGraph.totalEdgeCost() << endl;
      cout<< g.totalDistance() << endl;
+     cout<< primsGraph.totalDistance() << endl;
+     cout<< primsGraph.totalDistance() - g.totalDistance() << endl;
     return EXIT_SUCCESS;
 }

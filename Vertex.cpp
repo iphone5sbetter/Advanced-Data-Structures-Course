@@ -12,13 +12,14 @@ Vertex::Vertex ( const std::string &name ) {
   visited = false;
 }
 
-bool Vertex::addEdge(Vertex *to, unsigned int cost, unsigned int length) {
+void Vertex::addEdge(Vertex *to, unsigned int cost, unsigned int length) {
   Edge edge = Edge(this, to, cost, length); // Create new edge
    
-  edges[to->name] = edge;
+//  edges[to->name] = edge;
+  edges.insert(std::make_pair(to->name, edge));
 
 
-  return edges.insert(std::make_pair(to->getName(), edge)).second; 
+//  return edges.insert(std::make_pair(to->getName(), edge)).second; 
 }
 
 const std::string& Vertex::getName() const {

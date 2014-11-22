@@ -54,7 +54,7 @@ class UndirectedGraph {
      * is possible. To call this method when a spanning tree is
      * impossible is undefined behavior.
      */
-    UndirectedGraph * minSpanningTree();
+    UndirectedGraph minSpanningTree();
     
     /**
      * Determines the combined distance from the given Vertex to all
@@ -108,13 +108,11 @@ class UndirectedGraph {
     };
     class MSTComparator {
       public:
-        bool operator()(const std::pair<Edge, unsigned int> &left,
-                const std::pair<Edge, unsigned int> &right){
-	  if( left.second > right.second )
+        bool operator()(Edge &left, Edge &right){
+	  if( left.getCost() > right.getCost() )
 	    return true;
 	  else
 	    return false;
         }
     };
-
 #endif

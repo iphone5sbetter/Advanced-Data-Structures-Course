@@ -29,7 +29,7 @@ class Vertex {
      * vertex, updates the cost and length of the edge to match the
      * passed parameters.
      */
-    bool addEdge(Vertex *to, unsigned int cost, unsigned int length);
+    void addEdge(Vertex *to, unsigned int cost, unsigned int length);
     
     /**
      * Returns the Vertex's name.
