@@ -7,77 +7,71 @@
 using namespace std;
 
 Vertex::Vertex ( const std::string &name ) {
-  this->name = name;
-  distance = INFINITY; 
-  visited = false;
+  this->name = name;			// Set name of vertex
+  distance = INFINITY; 			// Set distance of vertex
+  visited = false;			// Vertex is unvisited
 }
 
 void Vertex::addEdge(Vertex *to, unsigned int cost, unsigned int length) {
   Edge edge = Edge(this, to, cost, length); // Create new edge
-   
-//  edges[to->name] = edge;
-  edges.insert(std::make_pair(to->name, edge));
-
-
-//  return edges.insert(std::make_pair(to->getName(), edge)).second; 
+  edges.insert(std::make_pair(to->name, edge)); // Insert new edge
 }
 
 const std::string& Vertex::getName() const {
-  return name;
+  return name;				// Obtain name of vertex
 }
 
 unsigned int Vertex::getDistance() const {
-  return distance;
+  return distance;			// Obtain distance of vertex
 }
 
 void Vertex::setDistance(unsigned int distance) {
-  this->distance = distance;
+  this->distance = distance;		// Set distance of vertex
 }
 
 bool Vertex::wasVisited() const {
-  return this->visited;
+  return this->visited;			// Determine if vertex has been visited
 }
 
 void Vertex::setVisited(bool visited) {
-  this->visited = visited;
+  this->visited = visited;		// Set visited state
 }
 
 void clearEdges() {
-  //clear out the edges map for the vertex
-  auto edges_it = edges.begin();
-  while ( edges_it != edges.end() ) {
-    edges_it.clear();
-    edges_it++;
-  }
+  // Clear out the edges map for the vertex
+  edges.clear();
 }
 
 unsigned int Vertex::totalEdgeCost() const {
   int cost = 0;
+  // Iterate through edges
   for ( auto it = edges.begin(); it != edges.end(); ++it )
-    cost += it->second.getCost();
+    cost += it->second.getCost();	// Determine total cost
   return cost;
 }
 
-std::vector< std::pair<Vertex*, Edge> >& Vertex::getUnvisitedNeighbors() const {
-  //create an iterator and set it to the beginning of your edge list
+std::vector< std::pair<Vertex*, Edge> >& Vertex::getUnvisitedNeighbors() const 
+{
+  // Create an iterator and set it to the beginning of your edge list
   unordered_map<std::string, Edge>::const_iterator it = edges.begin();
 
-  //create a vector list to store the vertices that are neighbors
+  // Create a vector list to store the vertices that are neighbors
   std::vector< std::pair<Vertex*, Edge> > * neighbors 
 			= new std::vector< std::pair<Vertex*, Edge> >();
 
-  while( it != edges.end() ) {
+  while( it != edges.end() ) {		// Iterate through all edges
 
-    auto edge = it->second;
-    Vertex* currentNeighbor = edge.getTo();
+    auto edge = it->second;		// Obtain edge
+    Vertex* currentNeighbor = edge.getTo(); // Vertex pointer to end point
     if( currentNeighbor->wasVisited() == false ) {
+      // Add neighboring vertices to vector 
       neighbors->push_back( std::make_pair(currentNeighbor, edge) );
     }
-    //increment the iterator to the next value in edges()
+    // Increment the iterator to the next value in edges()
     it++;
   }
 
-  return *neighbors;
+  return *neighbors;			// Vector of neighboring vertices
   
 }
 

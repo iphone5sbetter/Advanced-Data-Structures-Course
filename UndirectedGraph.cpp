@@ -12,8 +12,8 @@
 
 using namespace std;
 
-/**void UndirectedGraph::addEdge(const std::string &from, const std::string &to,
-            unsigned int cost, unsigned int length) 
+/**void UndirectedGraph::addEdge(const std::string &from,             
+ * const std::string &to, unsigned int cost, unsigned int length) 
  * Inserts an edge into graph
  * Uses an iterator to find the from vertex and checks if it is already in 
  * our map vertices, if not then it creates a new vertex and inserts it into
@@ -25,23 +25,23 @@ void UndirectedGraph::addEdge(const std::string &from, const std::string &to,
   unordered_map<string, Vertex*>::const_iterator it = vertices.find(from);
   Vertex * fromVertex;
   Vertex * toVertex;
-  if( it == vertices.end() ) {      // from vertex does not exist
+  if( it == vertices.end() ) {      // From vertex does not exist
     fromVertex = new Vertex( from );
     vertices.insert( make_pair(from, fromVertex ));
   }
-  else {			    // from vertex exists
+  else {			    // From vertex exists
     fromVertex = it->second;
   }
 
   it = vertices.find( to );         
-  if( it == vertices.end() ) {      // to vertex does not exist
+  if( it == vertices.end() ) {      // To vertex does not exist
     toVertex = new Vertex( to );
     vertices.insert( make_pair( to, toVertex ));
   }
-  else {			    // to vertex exists
+  else {			    // To vertex exists
     toVertex = it->second;
   }
-  //call Vertex.cpp addEdge to actually create/add the edge 
+  //Call Vertex.cpp addEdge to actually create/add the edge 
   fromVertex->addEdge( toVertex, cost, length );
   toVertex->addEdge( fromVertex, cost, length );
 }
@@ -70,14 +70,14 @@ unsigned int UndirectedGraph::totalEdgeCost() const {
  * impossible is undefined behavior.
  */
 UndirectedGraph UndirectedGraph::minSpanningTree() {
-  //create a new graph and priority queue
+  // Create a new graph and priority queue
   UndirectedGraph graph;
   std::priority_queue< Edge, std::vector<Edge>, MSTComparator > pq;
 
-  //iterator for vertices
+  //Iterator for vertices
   auto s = vertices.begin();
 
-  //set all vertices to false
+  // Set all vertices to false
   while (s != vertices.end()) {
     s->second->setVisited(false);
     s++;
@@ -85,7 +85,7 @@ UndirectedGraph UndirectedGraph::minSpanningTree() {
   
   Vertex * arbitrary = vertices.begin()->second;	// Arbitrary vertex
 
-  arbitrary->setVisited(true);				// set to true
+  arbitrary->setVisited(true);				// Set to true
 
   // Iterate through adjacency list (go through all edges in hash map "edges")
   unordered_map<std::string, Edge>::iterator it = arbitrary->edges.begin();
@@ -93,23 +93,23 @@ UndirectedGraph UndirectedGraph::minSpanningTree() {
     pq.push(it->second);		// Put edges in queue
   }
   
-  //iterator to go through the edges
+  // Iterator to go through the edges
   unordered_map<std::string, Edge>::iterator itEdge;
 
   while(!pq.empty()) {
     Edge e = pq.top();
     pq.pop();			// Remove edge with smallest cost
-    //if this edge was already added to MST continue
+    // If this edge was already added to MST continue
     if (e.getTo()->wasVisited() == true) {
       continue;
     }
     else {
-    //else create the edge and flag it to be visited
+    // Else create the edge and flag it to be visited
       e.getTo()->setVisited(true);
       graph.addEdge(e.getFrom()->getName(), e.getTo()->getName(), e.getCost(),
-								 e.getLength());
+							 e.getLength());
 
-      //go through all of this vertex's edges for MST growing algorithm
+      // Go through all of this vertex's edges for MST growing algorithm
       for (itEdge = e.getTo()->edges.begin(); itEdge != e.getTo()->edges.end();
 								 itEdge++)  
       {
@@ -120,7 +120,7 @@ UndirectedGraph UndirectedGraph::minSpanningTree() {
       }
     }
   } 
-  //return your MST
+  // Return your MST
   return graph;
 }
 
@@ -144,21 +144,21 @@ unsigned int UndirectedGraph::totalDistance(const std::string &from) {
     it++;
   }
 
-  //create a priority queue
+  // Create a priority queue
   std::priority_queue< std::pair<Vertex*, unsigned int>, 
                   std::vector<std::pair<Vertex*, unsigned int > >, 
 		  DijkstraVertexComparator > pq;
 
-  //enqueue the vertex that was passed in
-  //find vertex in hashmap based on string passed in
+  // Enqueue the vertex that was passed in
+  // Find vertex in hashmap based on string passed in
   Vertex * vToEnqueue = vertices[ from ];
 
 
 
-  //set source vertex distance to zero
+  // Set source vertex distance to zero
   vToEnqueue->setDistance( 0 );
 
-  //push the pair to the priority queue
+  // Push the pair to the priority queue
   std::pair<Vertex*, unsigned int> pairToEnqueue = 
 		std::make_pair( vToEnqueue, vToEnqueue->getDistance() );
 
@@ -168,11 +168,11 @@ unsigned int UndirectedGraph::totalDistance(const std::string &from) {
 
 
   while( !pq.empty() ) {
-    //	dequeue pair (v,c) from head thus removing the one with minimum cost
+    // Dequeue pair (v,c) from head thus removing the one with minimum cost
     std::pair<Vertex*, unsigned int> v = pq.top();
     pq.pop();
 
-    //	if( v->visited == true ) 	continue. Else, set it to true
+    // If( v->visited == true ) continue. Else, set it to true
     if( v.first->wasVisited() == true )
 	continue;
     else
@@ -188,43 +188,43 @@ unsigned int UndirectedGraph::totalDistance(const std::string &from) {
 						unvisitedNeighbors.begin();
 
     
-    //for( each of v's adjacent nodes (w) where visited == false
+    // For each of v's adjacent nodes (w) where visited == false
     while( it != unvisitedNeighbors.end() ) {
 
-      //get the edge
+      // Get the edge
       Edge vwEdge = it->second;
 
-      //get the "w" vertex aka an adjacent node that has been unvisited
+      // Get the "w" vertex aka an adjacent node that has been unvisited
       Vertex * wVertex = it->first;
 
 
-      //calculate score
+      // Calculate score
       unsigned int score = vwEdge.getLength() + v.first->getDistance();
 
-      //if score is less than w's distance set w's distance to score 
+      // If score is less than w's distance set w's distance to score 
       if( score < wVertex->getDistance() ) {
          wVertex->setDistance( score );
 
 
       }
-      //enqueue w
+      // Enqueue w
       pq.push( std::make_pair( wVertex, wVertex->getDistance() ) );
-      //go to next unvisited neighbor
+      // Go to next unvisited neighbor
       it++;  
-      //v.first->setVisited(true);
+      // v.first->setVisited(true);
     }
   }
 
-  //create an iterator to iterate through vertices map
+  // Create an iterator to iterate through vertices map
   auto vertices_it = vertices.begin();
 
   unsigned int toReturn = 0;
 
   while ( vertices_it != vertices.end() ){
 
-    //sum all of the distances
+    // Sum all of the distances
     toReturn += vertices_it->second->getDistance();
-    //go to next vertex
+    // Go to next vertex
     vertices_it++;
   }
 
@@ -239,17 +239,17 @@ unsigned int UndirectedGraph::totalDistance(const std::string &from) {
  * Returns max possible distance if the graph is not connected.
  */
 unsigned int UndirectedGraph::totalDistance() {
-  //loop through each vertex and call the other totalDistance on them
+  // Loop through each vertex and call the other totalDistance on them
 
-  //create iterator for vertices
+  // Create iterator for vertices
   auto it = vertices.begin();
   unsigned int totalDistance = 0;
 
 
-  //loop through all of vertices
+  // Loop through all of vertices
   while( it != vertices.end() ) {
-    //call the other totalDistance method on each vertex and sum up all the 
-    //results
+    // Call the other totalDistance method on each vertex and sum up all the 
+    // results
     totalDistance += this->totalDistance(it->first);
     it++;
   }
@@ -262,10 +262,12 @@ unsigned int UndirectedGraph::totalDistance() {
  * Destructs an UndirectedGraph.
  */
 ~UndirectedGraph(){
+  // Goes through all the vertices and calls clearEdges() for each one of them
   auto it = vertices.begin();
   while( it != vertices.end() ) {
     it->second->clearEdges();
     it++;
   }
+  // Clear the vertices
   vertices.clear();
 }
