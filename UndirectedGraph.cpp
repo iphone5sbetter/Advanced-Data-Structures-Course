@@ -9,9 +9,6 @@
 #include <fstream>
 #include <iostream>
 
-//const int INFINITY = 2147483647;
-//const int INFINITY = INT_MAX;
-
 
 using namespace std;
 
@@ -49,6 +46,7 @@ void UndirectedGraph::addEdge(const std::string &from, const std::string &to,
   toVertex->addEdge( fromVertex, cost, length );
 }
 
+
 /** unsigned int UndirectedGraph::totalEdgeCost() const 
  * Returns total cost of all edges in the graph
  * Since graph is undirected you divide cost by 2
@@ -60,6 +58,7 @@ unsigned int UndirectedGraph::totalEdgeCost() const {
   return cost/2;
   
 }
+
 
 /** UndirectedGraph UndirectedGraph::minSpanningTree() 
  * Removes all edges from the graph except those necessary to
@@ -75,15 +74,18 @@ UndirectedGraph UndirectedGraph::minSpanningTree() {
   UndirectedGraph graph;
   std::priority_queue< Edge, std::vector<Edge>, MSTComparator > pq;
 
+  //iterator for vertices
   auto s = vertices.begin();
+
+  //set all vertices to false
   while (s != vertices.end()) {
     s->second->setVisited(false);
     s++;
   }
-
+  
   Vertex * arbitrary = vertices.begin()->second;	// Arbitrary vertex
 
-  arbitrary->setVisited(true);
+  arbitrary->setVisited(true);				// set to true
 
   // Iterate through adjacency list (go through all edges in hash map "edges")
   unordered_map<std::string, Edge>::iterator it = arbitrary->edges.begin();
@@ -97,14 +99,17 @@ UndirectedGraph UndirectedGraph::minSpanningTree() {
   while(!pq.empty()) {
     Edge e = pq.top();
     pq.pop();			// Remove edge with smallest cost
+    //if this edge was already added to MST continue
     if (e.getTo()->wasVisited() == true) {
       continue;
     }
     else {
+    //else create the edge and flag it to be visited
       e.getTo()->setVisited(true);
       graph.addEdge(e.getFrom()->getName(), e.getTo()->getName(), e.getCost(),
 								 e.getLength());
 
+      //go through all of this vertex's edges for MST growing algorithm
       for (itEdge = e.getTo()->edges.begin(); itEdge != e.getTo()->edges.end();
 								 itEdge++)  
       {
@@ -115,10 +120,12 @@ UndirectedGraph UndirectedGraph::minSpanningTree() {
       }
     }
   } 
+  //return your MST
   return graph;
 }
 
-/**
+
+/** unsigned int UndirectedGraph::totalDistance(const std::string &from)
  * Determines the combined distance from the given Vertex to all
  * other Vertices in the graph using Dijkstra's algorithm.
  *
@@ -151,6 +158,7 @@ unsigned int UndirectedGraph::totalDistance(const std::string &from) {
   //set source vertex distance to zero
   vToEnqueue->setDistance( 0 );
 
+  //push the pair to the priority queue
   std::pair<Vertex*, unsigned int> pairToEnqueue = 
 		std::make_pair( vToEnqueue, vToEnqueue->getDistance() );
 
@@ -224,7 +232,7 @@ unsigned int UndirectedGraph::totalDistance(const std::string &from) {
 }
 
 
-/**
+/** unsigned int UndirectedGraph::totalDistance() 
  * Determines the combined distance from all Vertices to all other
  * Vertices in the graph.
  *
@@ -240,19 +248,24 @@ unsigned int UndirectedGraph::totalDistance() {
 
   //loop through all of vertices
   while( it != vertices.end() ) {
-
-
-  //	sumTotalDistance += call totalDistance for all of them
-
-
+    //call the other totalDistance method on each vertex and sum up all the 
+    //results
     totalDistance += this->totalDistance(it->first);
     it++;
-
-
-
   }
-
   return totalDistance;
 }
 
 
+
+/**
+ * Destructs an UndirectedGraph.
+ */
+~UndirectedGraph(){
+  auto it = vertices.begin();
+  while( it != vertices.end() ) {
+    it->second->clearEdges();
+    it++;
+  }
+  vertices.clear();
+}

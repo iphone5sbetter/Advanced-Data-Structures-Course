@@ -2,9 +2,9 @@
 #include "UndirectedGraph.hpp"
 #include <string>
 #include <queue>
-using namespace std;
+#include <math.h>
 
-const int INFINITY = 2147483647;
+using namespace std;
 
 Vertex::Vertex ( const std::string &name ) {
   this->name = name;
@@ -43,8 +43,12 @@ void Vertex::setVisited(bool visited) {
 }
 
 void clearEdges() {
-  //use erase method
-  //edges.erase( begin, end ) 
+  //clear out the edges map for the vertex
+  auto edges_it = edges.begin();
+  while ( edges_it != edges.end() ) {
+    edges_it.clear();
+    edges_it++;
+  }
 }
 
 unsigned int Vertex::totalEdgeCost() const {
