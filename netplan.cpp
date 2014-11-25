@@ -42,17 +42,33 @@ int main(int argc, char **argv) {
     std::string v2;
     int cost;
     int time;
+    bool emptyGraph = true;
     while (in.good()) {
+      //read input
       in >> v1 >> v2 >> cost >> time;
-      if(!in.good()) 
-        break; 
-     g.addEdge( v1, v2, cost, time );
-     //primsGraph.addEdge( v1, v2, cost, time );
 
-     }
+      if(!in.good()) {
+        if( emptyGraph ) {
+          //print zeros
+          for( int i = 0; i < 6 ; i++ ) 
+            cout<< "0" << endl;
+          //end
+          return 0;
+        }
+        break; 
+      }
+      //if you made it past the very first iteration of checking if input is 
+      //there than you wont have an empty graph so set the bool to false
+      emptyGraph = false;
+
+      //update the graph with the info on the current line
+      g.addEdge( v1, v2, cost, time );
+    }
+
 
     UndirectedGraph primsGraph = g.minSpanningTree();
      
+
      cout<< g.totalEdgeCost()<< endl;
      cout<< primsGraph.totalEdgeCost() << endl;
      cout<< g.totalEdgeCost() - primsGraph.totalEdgeCost() << endl;

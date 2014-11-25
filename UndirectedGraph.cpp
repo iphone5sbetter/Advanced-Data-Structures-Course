@@ -15,7 +15,9 @@
 
 using namespace std;
 
-/** Inserts an edge into graph
+/**void UndirectedGraph::addEdge(const std::string &from, const std::string &to,
+            unsigned int cost, unsigned int length) 
+ * Inserts an edge into graph
  * Uses an iterator to find the from vertex and checks if it is already in 
  * our map vertices, if not then it creates a new vertex and inserts it into
  * map. Same process repeated for to vertex. At the end those two vertexes
@@ -47,7 +49,7 @@ void UndirectedGraph::addEdge(const std::string &from, const std::string &to,
   toVertex->addEdge( fromVertex, cost, length );
 }
 
-/**
+/** unsigned int UndirectedGraph::totalEdgeCost() const 
  * Returns total cost of all edges in the graph
  * Since graph is undirected you divide cost by 2
  */
@@ -59,16 +61,17 @@ unsigned int UndirectedGraph::totalEdgeCost() const {
   
 }
 
-/**
-* Removes all edges from the graph except those necessary to
-* form a minimum cost spanning tree of all vertices using Prim's
-* algorithm.
-*
-* The graph must be in a state where such a spanning tree
-* is possible. To call this method when a spanning tree is
-* impossible is undefined behavior.
-*/
+/** UndirectedGraph UndirectedGraph::minSpanningTree() 
+ * Removes all edges from the graph except those necessary to
+ * form a minimum cost spanning tree of all vertices using Prim's
+ * algorithm.
+ *
+ * The graph must be in a state where such a spanning tree
+ * is possible. To call this method when a spanning tree is
+ * impossible is undefined behavior.
+ */
 UndirectedGraph UndirectedGraph::minSpanningTree() {
+  //create a new graph and priority queue
   UndirectedGraph graph;
   std::priority_queue< Edge, std::vector<Edge>, MSTComparator > pq;
 
@@ -88,6 +91,9 @@ UndirectedGraph UndirectedGraph::minSpanningTree() {
     pq.push(it->second);		// Put edges in queue
   }
   
+  //iterator to go through the edges
+  unordered_map<std::string, Edge>::iterator itEdge;
+
   while(!pq.empty()) {
     Edge e = pq.top();
     pq.pop();			// Remove edge with smallest cost
@@ -96,12 +102,14 @@ UndirectedGraph UndirectedGraph::minSpanningTree() {
     }
     else {
       e.getTo()->setVisited(true);
-      graph.addEdge(e.getFrom()->getName(), e.getTo()->getName(), e.getCost(), e.getLength());
-      unordered_map<std::string, Edge>::iterator itEdge;
-      for (itEdge = e.getTo()->edges.begin(); itEdge != e.getTo()->edges.end(); itEdge++)  
+      graph.addEdge(e.getFrom()->getName(), e.getTo()->getName(), e.getCost(),
+								 e.getLength());
+
+      for (itEdge = e.getTo()->edges.begin(); itEdge != e.getTo()->edges.end();
+								 itEdge++)  
       {
         Vertex * vertex = itEdge->second.getTo();
-        if (vertex->wasVisited() == false) {	// not sure about using vertex
+        if (vertex->wasVisited() == false) {	
 	  pq.push(itEdge->second);
 	}
       }
