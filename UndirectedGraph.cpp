@@ -211,7 +211,6 @@ unsigned int UndirectedGraph::totalDistance(const std::string &from) {
       pq.push( std::make_pair( wVertex, wVertex->getDistance() ) );
       // Go to next unvisited neighbor
       it++;  
-      // v.first->setVisited(true);
     }
   }
 
