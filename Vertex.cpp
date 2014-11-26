@@ -53,14 +53,14 @@ unsigned int Vertex::totalEdgeCost() const {
   return cost;
 }
 
-std::vector< std::pair<Vertex*, Edge> >& Vertex::getUnvisitedNeighbors() const 
+std::vector< std::pair<Vertex*, Edge> > Vertex::getUnvisitedNeighbors() const 
 {
   // Create an iterator and set it to the beginning of your edge list
   unordered_map<std::string, Edge>::const_iterator it = edges.begin();
 
   // Create a vector list to store the vertices that are neighbors
-  std::vector< std::pair<Vertex*, Edge> > * neighbors 
-			= new std::vector< std::pair<Vertex*, Edge> >();
+  std::vector< std::pair<Vertex*, Edge> > neighbors 
+			= std::vector< std::pair<Vertex*, Edge> >();
 
   while( it != edges.end() ) {		// Iterate through all edges
 
@@ -68,13 +68,13 @@ std::vector< std::pair<Vertex*, Edge> >& Vertex::getUnvisitedNeighbors() const
     Vertex* currentNeighbor = edge.getTo(); // Vertex pointer to end point
     if( currentNeighbor->wasVisited() == false ) {
       // Add neighboring vertices to vector 
-      neighbors->push_back( std::make_pair(currentNeighbor, edge) );
+      neighbors.push_back( std::make_pair(currentNeighbor, edge) );
     }
     // Increment the iterator to the next value in edges()
     it++;
   }
 
-  return *neighbors;			// Vector of neighboring vertices
+  return neighbors;			// Vector of neighboring vertices
   
 }
 

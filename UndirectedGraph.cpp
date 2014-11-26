@@ -25,7 +25,7 @@ void UndirectedGraph::addEdge(const std::string &from, const std::string &to,
   unordered_map<string, Vertex*>::const_iterator it = vertices.find(from);
   Vertex * fromVertex;
   Vertex * toVertex;
-  if( it == vertices.end() ) {      // From vertex does not exist
+  if( it == vertices.end()) {      // From vertex does not exist
     fromVertex = new Vertex( from );
     vertices.insert( make_pair(from, fromVertex ));
   }
