@@ -25,7 +25,7 @@ class UndirectedGraph {
     /**
      * Destructs an UndirectedGraph.
      */
-    ~UndirectedGraph(){};
+    ~UndirectedGraph();
     
     /**
      * Inserts an edge into the graph. If an edge already exists between

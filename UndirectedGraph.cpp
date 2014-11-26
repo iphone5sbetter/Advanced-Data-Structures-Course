@@ -260,12 +260,11 @@ unsigned int UndirectedGraph::totalDistance() {
 /**
  * Destructs an UndirectedGraph.
  */
-~UndirectedGraph(){
+UndirectedGraph::~UndirectedGraph(){
   // Goes through all the vertices and calls clearEdges() for each one of them
-  auto it = vertices.begin();
-  while( it != vertices.end() ) {
+  for( auto it = this->vertices.begin(); it != vertices.end(); it++ ) {
     it->second->clearEdges();
-    it++;
+    delete it->second;
   }
   // Clear the vertices
   vertices.clear();

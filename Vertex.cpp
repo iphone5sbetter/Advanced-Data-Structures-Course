@@ -37,9 +37,12 @@ void Vertex::setVisited(bool visited) {
   this->visited = visited;		// Set visited state
 }
 
-void clearEdges() {
+void Vertex::clearEdges() {
   // Clear out the edges map for the vertex
-  edges.clear();
+ // for( auto it = this->edges.begin(); it != edges.end(); it++ ) {
+    
+    edges.clear();
+  //}
 }
 
 unsigned int Vertex::totalEdgeCost() const {
